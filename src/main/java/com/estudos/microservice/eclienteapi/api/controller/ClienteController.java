@@ -52,7 +52,7 @@ public class ClienteController {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class))}),
             @ApiResponse(responseCode = "404", description = "Bad request")
     })
-    public ResponseEntity<Cliente> createAgrupamentoDeLocais(@RequestBody @Valid Cliente clienteRequest,
+    public ResponseEntity<Cliente> createCliente(@RequestBody @Valid Cliente clienteRequest,
                                                                                       UriComponentsBuilder uriBuilder) {
 
         Cliente cliente = clienteService.create(clienteRequest);
