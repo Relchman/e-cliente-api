@@ -1,7 +1,9 @@
 package com.estudos.microservice.eclienteapi.api.controller;
 
+import com.estudos.microservice.eclienteapi.core.config.RabbitmqConstantes;
 import com.estudos.microservice.eclienteapi.domain.model.Cliente;
 import com.estudos.microservice.eclienteapi.domain.service.ClienteService;
+import com.estudos.microservice.eclienteapi.domain.service.RabbitmqService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,8 +28,11 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService) {
+    private final RabbitmqService rabbitmqService;
+
+    public ClienteController(ClienteService clienteService, RabbitmqService rabbitmqService) {
         this.clienteService = clienteService;
+        this.rabbitmqService = rabbitmqService;
     }
 
 
@@ -60,6 +65,8 @@ public class ClienteController {
         URI uri = uriBuilder.path("/cliente/{id}")
                 .buildAndExpand(cliente.getId())
                 .toUri();
+
+        this.rabbitmqService.enviaMensagem(RabbitmqConstantes.FILA_CLIENTE, cliente);
 
         return ResponseEntity.created(uri).body(cliente);
     }
