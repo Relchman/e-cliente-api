@@ -23,11 +23,11 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     @Transactional
     public Cliente create(Cliente cliente) {
-        Optional<Cliente> agrupamentoDeLocalOptional =
+        Optional<Cliente> clienteOptional =
                 clienteRepository.findByNomeIgnoreCase(cliente.getNome());
 
-        if (agrupamentoDeLocalOptional.isPresent()) {
-            throw new BusinessException("Já existe um agrupamento com esse nome.");
+        if (clienteOptional.isPresent()) {
+            throw new BusinessException("Já existe um cliente com esse nome.");
         }
 
         return clienteRepository.save(cliente);
@@ -36,7 +36,7 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public Cliente findById(Long idCliente) {
         return clienteRepository.findById(idCliente)
-                .orElseThrow(() -> new NotFoundException("Agrupamento não encontrado."));
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
     }
 
     @Override

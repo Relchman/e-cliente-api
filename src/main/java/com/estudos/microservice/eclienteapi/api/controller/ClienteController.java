@@ -40,8 +40,8 @@ public class ClienteController {
             ),
     })
     public ResponseEntity<List<Cliente>> findAll() {
-        List<Cliente> agrupamentoDeLocais = clienteService.findAll();
-        return ResponseEntity.ok(agrupamentoDeLocais);
+        List<Cliente> clientes = clienteService.findAll();
+        return ResponseEntity.ok(clientes);
     }
 
 
@@ -57,8 +57,15 @@ public class ClienteController {
 
         Cliente cliente = clienteService.create(clienteRequest);
 
-        return ResponseEntity.ok(cliente);
+        URI uri = uriBuilder.path("/cliente/{id}")
+                .buildAndExpand(cliente.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(cliente);
     }
+
+
+
 
 
 }
