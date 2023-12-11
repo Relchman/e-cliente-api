@@ -1,0 +1,24 @@
+version: "3.1"
+services:
+  e-selecao-admissao-postgres:
+    image: postgres
+    container_name: e-selecao-admissao-postgres
+    volumes:
+      - ./postgres-container-data/selecao_admissao_postgres_backup_dump.dump:/selecao_admissao_postgres_backup_dump.dump
+      - ./postgres-container-data/selecao_admissao_postgres_backup_script.sh:/docker-entrypoint-initdb.d/selecao_admissao_postgres_backup_script.sh
+    environment:
+      POSTGRES_USER: selecao_admissao
+      POSTGRES_PASSWORD: selecao_admissao
+      POSTGRES_DB: selecao_admissao
+    ports:
+      - "5434:5432"
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: e-selecao-admissao-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5673:5672"  # Mapeia a porta padrão do RabbitMQ
+      - "15673:15672"  # Mapeia a porta do console de administração do RabbitMQ
